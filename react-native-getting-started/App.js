@@ -37,45 +37,49 @@ export default function App() {
   }
 
   return (
-    <View style={styles.appContainer}>
-      <View style={styles.paddingTopForAndroid} />
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={startAddGoalHandler}
-      />
-      <GoalInput
-        visible={modalIsVisible}
-        onAddGoal={addGoalHandler}
-        onCancel={endAddGoalHandler}
-      />
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={courseGoals}
-          //render items
-          renderItem={(itemData) => {
-            return (
-              <GoalItem
-                text={itemData.item.text}
-                id={itemData.item.id}
-                onDeleteGoal={addDeleteHandler}
-              />
-            );
-          }}
-          // "key" replacement
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
+    <>
+      <StatusBarRN />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#5e0acc"
+          onPress={startAddGoalHandler}
         />
+        <GoalInput
+          visible={modalIsVisible}
+          onAddGoal={addGoalHandler}
+          onCancel={endAddGoalHandler}
+        />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={courseGoals}
+            //render items
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  text={itemData.item.text}
+                  id={itemData.item.id}
+                  onDeleteGoal={addDeleteHandler}
+                />
+              );
+            }}
+            // "key" replacement
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+    backgroundColor: "#1e085a",
   },
   paddingTopForAndroid: {
     height: Platform.OS === "android" ? StatusBarRN.currentHeight + 10 : 0,
