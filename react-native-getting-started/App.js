@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, View, Button, Platform, StatusBar as StatusBarRN } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Button,
+  Platform,
+  StatusBar as StatusBarRN,
+} from "react-native";
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
@@ -13,11 +20,16 @@ export default function App() {
     setModalIsVisible(true);
   }
 
+  function endAddGoalHandler() {
+    setModalIsVisible(false);
+  }
+
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       { text: enteredGoalText, id: Math.random().toString() },
     ]);
+    endAddGoalHandler();
   }
 
   function addDeleteHandler(id) {
@@ -32,7 +44,11 @@ export default function App() {
         color="#5e0acc"
         onPress={startAddGoalHandler}
       />
-      <GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} />
+      <GoalInput
+        visible={modalIsVisible}
+        onAddGoal={addGoalHandler}
+        onCancel={endAddGoalHandler}
+      />
       <View style={styles.goalsContainer}>
         <FlatList
           data={courseGoals}
@@ -62,8 +78,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   paddingTopForAndroid: {
-    height: Platform.OS === 'android' ? StatusBarRN.currentHeight + 10 : 0,
-    backgroundColor: '#F0F0F0',
+    height: Platform.OS === "android" ? StatusBarRN.currentHeight + 10 : 0,
+    backgroundColor: "#F0F0F0",
   },
   goalsContainer: {
     flex: 5,
