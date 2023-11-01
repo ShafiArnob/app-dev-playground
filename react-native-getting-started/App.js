@@ -14,21 +14,22 @@ import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
 export default function App() {
-  
   const [courseGoals, setCourseGoals] = useState([]);
-
-
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
-      {text:enteredGoalText, id:Math.random().toString()},
+      { text: enteredGoalText, id: Math.random().toString() },
     ]);
   }
-  // console.log(courseGoals);
+
+  function addDeleteHandler(id) {
+    setCourseGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
+  }
+
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler}/>
+      <GoalInput onAddGoal={addGoalHandler} />
 
       <View style={styles.goalsContainer}>
         <FlatList
@@ -36,12 +37,16 @@ export default function App() {
           //render items
           renderItem={(itemData) => {
             return (
-              <GoalItem text={itemData.item.text}/>
+              <GoalItem
+                text={itemData.item.text}
+                id = {itemData.item.id}
+                onDeleteGoal={addDeleteHandler}
+              />
             );
           }}
           // "key" replacement
-          keyExtractor={(item, index)=>{
-            return item.id
+          keyExtractor={(item, index) => {
+            return item.id;
           }}
         />
       </View>
@@ -54,9 +59,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  
+
   goalsContainer: {
     flex: 5,
   },
-  
 });
