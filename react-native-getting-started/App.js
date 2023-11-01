@@ -1,20 +1,17 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-
+import { FlatList, StyleSheet, View, Button, Platform, StatusBar as StatusBarRN } from "react-native";
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
+
+  console.log(StatusBarRN.currentHeight);
+
+  function startAddGoalHandler() {
+    setModalIsVisible(true);
+  }
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
@@ -29,8 +26,13 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
-
+      <View style={styles.paddingTopForAndroid} />
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={startAddGoalHandler}
+      />
+      <GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} />
       <View style={styles.goalsContainer}>
         <FlatList
           data={courseGoals}
@@ -39,7 +41,7 @@ export default function App() {
             return (
               <GoalItem
                 text={itemData.item.text}
-                id = {itemData.item.id}
+                id={itemData.item.id}
                 onDeleteGoal={addDeleteHandler}
               />
             );
@@ -57,9 +59,12 @@ export default function App() {
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
   },
-
+  paddingTopForAndroid: {
+    height: Platform.OS === 'android' ? StatusBarRN.currentHeight + 10 : 0,
+    backgroundColor: '#F0F0F0',
+  },
   goalsContainer: {
     flex: 5,
   },
