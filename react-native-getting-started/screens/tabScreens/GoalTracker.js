@@ -6,8 +6,8 @@ import {
   Button,
   StatusBar as StatusBarRN,
 } from "react-native";
-import GoalItem from "../components/GoalItem";
-import GoalInput from "../components/GoalInput";
+import GoalItem from "../../components/GoalItem";
+import GoalInput from "../../components/GoalInput";
 
 const GoalTracker = () => {
   const [modalIsVisible, setModalIsVisible] = useState(false);
