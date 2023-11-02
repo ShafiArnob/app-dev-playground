@@ -1,91 +1,11 @@
-import { useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Button,
-  Platform,
-  StatusBar as StatusBarRN,
-} from "react-native";
-import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import { StatusBar as StatusBarRN, Text, View } from "react-native";
+import Navigation from "./Navigation";
 
 export default function App() {
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [courseGoals, setCourseGoals] = useState([]);
-
-  console.log(StatusBarRN.currentHeight);
-
-  function startAddGoalHandler() {
-    setModalIsVisible(true);
-  }
-
-  function endAddGoalHandler() {
-    setModalIsVisible(false);
-  }
-
-  function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      { text: enteredGoalText, id: Math.random().toString() },
-    ]);
-    endAddGoalHandler();
-  }
-
-  function addDeleteHandler(id) {
-    setCourseGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
-  }
-
   return (
     <>
       <StatusBarRN />
-      <View style={styles.appContainer}>
-        <Button
-          title="Add New Goal"
-          color="#5e0acc"
-          onPress={startAddGoalHandler}
-        />
-        <GoalInput
-          visible={modalIsVisible}
-          onAddGoal={addGoalHandler}
-          onCancel={endAddGoalHandler}
-        />
-        <View style={styles.goalsContainer}>
-          <FlatList
-            data={courseGoals}
-            //render items
-            renderItem={(itemData) => {
-              return (
-                <GoalItem
-                  text={itemData.item.text}
-                  id={itemData.item.id}
-                  onDeleteGoal={addDeleteHandler}
-                />
-              );
-            }}
-            // "key" replacement
-            keyExtractor={(item, index) => {
-              return item.id;
-            }}
-          />
-        </View>
-      </View>
+      <Navigation/>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 16,
-    backgroundColor: "#1e085a",
-  },
-  paddingTopForAndroid: {
-    height: Platform.OS === "android" ? StatusBarRN.currentHeight + 10 : 0,
-    backgroundColor: "#F0F0F0",
-  },
-  goalsContainer: {
-    flex: 5,
-  },
-});
