@@ -16,7 +16,11 @@ function HomeStackGroup() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home Stack" component={HomeParent} />
-      <HomeStack.Screen name="Home Child" component={HomeChild} />
+      <HomeStack.Screen
+        name="Home Child"
+        component={HomeChild}
+        options={{ presentation: "fullScreenModal" }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -49,7 +53,7 @@ function TabGroup() {
       <Tab.Screen
         name="HomeStackGroup"
         component={HomeStackGroup}
-        options={{ headerShown: false, tabBarLabel:"Home"}}
+        options={{ headerShown: false, tabBarLabel: "Home" }}
       />
 
       <Tab.Screen name="Goal Tracker" component={GoalTracker} />
