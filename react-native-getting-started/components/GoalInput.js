@@ -1,3 +1,4 @@
+import "react-native-gesture-handler"
 import {
   StyleSheet,
   View,
@@ -6,6 +7,7 @@ import {
   Modal,
   Image,
 } from "react-native";
+
 import { useState } from "react";
 
 function GoalInput(props) {
