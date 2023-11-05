@@ -1,4 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import GoalTracker from "./screens/tabScreens/GoalTracker";
@@ -10,6 +14,33 @@ import HomeParent from "./screens/homeStack/HomeParent";
 import HomeChild from "./screens/homeStack/HomeChild";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerComp from "./screens/drawerScreens/Drawer";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import Tab1 from "./screens/toptabs/tab1";
+import { useColorScheme } from "react-native";
+
+//TopTabs
+const TopTabs = createMaterialTopTabNavigator();
+
+function TopTabsGroup() {
+  return (
+    <TopTabs.Navigator
+      screenOptions={{
+        tabBarLabelStyle: {
+          textTransform: "capitalize",
+          fontWeight: "bold",
+        },
+        tabBarIndicatorStyle: {
+          height: 5,
+          borderRadius: 5,
+          backgroundColor: "red",
+        },
+      }}
+    >
+      <TopTabs.Screen name="tab1" component={Tab1} />
+      <TopTabs.Screen name="DogShow" component={DogShow} />
+    </TopTabs.Navigator>
+  );
+}
 
 //Drawer
 const Drawer = createDrawerNavigator();
@@ -17,7 +48,11 @@ const Drawer = createDrawerNavigator();
 function DrawerGroup() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="drawer" component={DrawerComp} options={{headerShown:true}}/>
+      <Drawer.Screen
+        name="drawer"
+        component={DrawerComp}
+        options={{ headerShown: true }}
+      />
       <Drawer.Screen name="HomeStackGroup" component={HomeStackGroup} />
     </Drawer.Navigator>
   );
@@ -29,7 +64,11 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackGroup() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="TabGroup" component={TabGroup} />
+      <HomeStack.Screen
+        name="TabGroup"
+        component={TabGroup}
+        options={{ headerShown: false }}
+      />
       <HomeStack.Screen
         name="Home Child"
         component={HomeChild}
@@ -74,13 +113,14 @@ function TabGroup() {
 
       <Tab.Screen
         name="Dog Show"
-        component={DogShow}
+        component={TopTabsGroup}
         options={{
           //change nav icons inline
           tabBarIcon: ({ color, focused, size }) => (
             <MaterialCommunityIcons name="dog" size={size} color={color} />
           ),
           tabBarInactiveTintColor: "gray",
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
@@ -88,8 +128,11 @@ function TabGroup() {
 }
 
 export default function Navigation() {
+  const currentTheme = useColorScheme();
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={currentTheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       <DrawerGroup />
       {/* <HomeStackGroup /> */}
     </NavigationContainer>
