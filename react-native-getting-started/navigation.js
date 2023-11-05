@@ -8,6 +8,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import HomeParent from "./screens/homeStack/HomeParent";
 import HomeChild from "./screens/homeStack/HomeChild";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import DrawerComp from "./screens/drawerScreens/Drawer";
+
+//Drawer
+const Drawer = createDrawerNavigator();
+
+function DrawerGroup() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="drawer" component={DrawerComp} options={{headerShown:true}}/>
+      <Drawer.Screen name="HomeStackGroup" component={HomeStackGroup} />
+    </Drawer.Navigator>
+  );
+}
 
 //Stack
 const HomeStack = createNativeStackNavigator();
@@ -15,7 +29,7 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackGroup() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home Stack" component={HomeParent} />
+      <HomeStack.Screen name="TabGroup" component={TabGroup} />
       <HomeStack.Screen
         name="Home Child"
         component={HomeChild}
@@ -37,7 +51,7 @@ function TabGroup() {
           let iconName;
           if (route.name == "Goal Tracker") {
             iconName = focused ? "football" : "football-outline";
-          } else if (route.name == "HomeStackGroup") {
+          } else if (route.name == "home") {
             iconName = focused ? "home" : "home-outline";
           }
 
@@ -51,8 +65,8 @@ function TabGroup() {
       })}
     >
       <Tab.Screen
-        name="HomeStackGroup"
-        component={HomeStackGroup}
+        name="home"
+        component={HomeParent}
         options={{ headerShown: false, tabBarLabel: "Home" }}
       />
 
@@ -76,7 +90,8 @@ function TabGroup() {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <TabGroup />
+      <DrawerGroup />
+      {/* <HomeStackGroup /> */}
     </NavigationContainer>
   );
 }

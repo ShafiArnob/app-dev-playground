@@ -1,7 +1,21 @@
-import { Button, Text, View, StyleSheet } from "react-native";
+import { Button, Text, View, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
+import { FontAwesome } from '@expo/vector-icons';
 function HomeParent() {
   const { navigate } = useNavigation();
+  const navigation = useNavigation()
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerLeft: ()=>(
+        <Pressable onPress={()=>navigation.openDrawer()}>
+          <FontAwesome name="bars" size={24} color="black" />
+        </Pressable>
+      ),
+      // headerRight:() => <Button title="test"/>
+    })
+  }, [])
 
   return (
     <View style={styles.buttonContainer}>
